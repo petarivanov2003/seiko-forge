@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seiko Forge | Custom Meticulous Watches</title>
     <style>
         :root {
@@ -16,191 +16,350 @@
         }
 
         html { scroll-behavior: smooth; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: var(--font-main); background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: color 0.3s; }
+        a:hover { color: var(--accent); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
         
-        /* Buttons & UI */
-        .btn { display: inline-block; padding: 14px 30px; background-color: var(--text-main); color: var(--bg-dark); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; cursor: pointer; border: none; width: 100%; text-align: center; border-radius: 4px; font-size: 0.9rem; }
-        .btn:active { transform: scale(0.98); background-color: var(--accent); color: white; }
+        /* Buttons */
+        .btn { display: inline-block; padding: 12px 30px; background-color: var(--text-main); color: var(--bg-dark); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; cursor: pointer; border: none; width: 100%; text-align: center; margin-top: 10px; border-radius: 4px; }
+        .btn:hover { background-color: var(--accent); color: white; }
 
-        .announcement-bar { background-color: #000; padding: 8px; text-align: center; font-size: 0.7rem; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); }
+        .announcement-bar { background-color: #000; padding: 10px; text-align: center; font-size: 0.8rem; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); }
         
-        /* Mobile Header */
-        header { padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background-color: rgba(10, 10, 10, 0.98); z-index: 1000; border-bottom: 1px solid var(--border-color); height: 70px; }
-        .logo-img { height: 45px; filter: invert(1) brightness(1.5); }
-        
-        .nav-icons { display: flex; gap: 15px; align-items: center; font-size: 1.2rem; }
-        .nav-icons span { cursor: pointer; }
+        /* Header & Nav */
+        header { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background-color: rgba(10, 10, 10, 0.95); z-index: 1000; border-bottom: 1px solid var(--border-color); }
+        .logo-img { height: 60px; filter: invert(1) brightness(1.5); mix-blend-mode: screen; }
+        nav ul { display: flex; gap: 30px; }
+        nav ul li a { font-size: 0.9rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-icons { display: flex; gap: 20px; font-size: 1.2rem; align-items: center; }
+        .nav-icons span { cursor: pointer; transition: color 0.3s; }
+        .nav-icons span:hover { color: var(--accent); }
 
-        /* Full Screen Mobile Menu */
-        .mobile-nav { position: fixed; top: 0; left: -100%; width: 80%; height: 100%; background: var(--bg-light-dark); z-index: 2000; transition: 0.4s; padding: 80px 40px; }
-        .mobile-nav.active { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
-        .mobile-nav ul li { margin-bottom: 30px; list-style: none; }
-        .mobile-nav ul li a { font-size: 1.5rem; text-transform: uppercase; font-weight: bold; color: var(--text-main); text-decoration: none; }
-
-        /* Hero Section */
-        .hero { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), #111; padding: 0 30px; }
-        .hero h1 { font-size: 2.2rem; letter-spacing: 2px; margin-bottom: 15px; }
-        .hero p { font-size: 1rem; color: #ddd; }
-
-        /* Grid Adjustments */
-        .section-title { text-align: center; margin: 40px 0 20px; font-size: 1.5rem; letter-spacing: 2px; }
-        .bestsellers { padding: 20px 5%; }
-        .grid-container { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        
-        /* Login Modal */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal.active { display: flex; }
-        .modal-content { background: var(--bg-light-dark); width: 100%; max-width: 400px; padding: 30px; border-radius: 8px; position: relative; }
-        .modal-content h2 { margin-bottom: 20px; color: var(--accent); }
-        .modal-content input { width: 100%; padding: 12px; margin-bottom: 15px; background: #222; border: 1px solid var(--border-color); color: white; border-radius: 4px; }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; }
-
-        /* Cart Sidebar (Optimized for Mobile) */
-        .cart-sidebar { position: fixed; top: 0; right: -100%; width: 100%; height: 100%; background-color: var(--bg-light-dark); z-index: 1002; transition: 0.4s; padding: 20px; display: flex; flex-direction: column; }
-        .cart-sidebar.active { right: 0; }
-
-        /* FAQ */
-        .faq-section { padding: 40px 5%; }
-        .faq-item { margin-bottom: 10px; padding: 15px; }
-
-        @media (min-width: 768px) {
-            .grid-container { grid-template-columns: repeat(2, 1fr); }
-            .hero h1 { font-size: 3.5rem; }
-            .cart-sidebar { width: 400px; right: -450px; }
+        /* Hero */
+        .hero { 
+            height: 60vh; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; 
+            background-color: #111;
+            /* IMPORTANT: Use a dash instead of a space in the filename on GitHub! */
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("seiko-mods.jpg"); 
+            background-position: center; background-size: cover; padding: 0 20px; 
         }
+        .hero h1 { font-size: 3.5rem; letter-spacing: 4px; margin-bottom: 15px; text-transform: uppercase; }
+        .hero p { max-width: 600px; font-size: 1.1rem; color: #ddd; margin-bottom: 30px; }
+
+        /* Shop Grid */
+        .section-title { text-align: center; margin: 60px 0 40px; font-size: 2rem; letter-spacing: 2px; text-transform: uppercase; }
+        .bestsellers { padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+        .product-card { background-color: var(--bg-light-dark); padding: 20px; border-radius: 4px; text-align: center; display: flex; flex-direction: column; transition: transform 0.3s; border: 1px solid var(--border-color); }
+        .product-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .product-img { width: 100%; height: 300px; object-fit: cover; background-color: #222; margin-bottom: 20px; border-radius: 4px; }
+        .product-info { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 10px; }
+        .product-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; }
+        .product-price { font-size: 1.1rem; margin-bottom: 15px; }
+        .sale-price { color: var(--accent); font-weight: bold; }
+
+        /* Auth Modal (Login/Register) */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--bg-light-dark); width: 100%; max-width: 400px; padding: 40px; border-radius: 8px; border: 1px solid var(--border-color); position: relative; text-align: center; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+        .close-modal:hover { color: var(--text-main); }
+        .modal-content h2 { margin-bottom: 25px; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; }
+        .modal-content input { width: 100%; padding: 12px; margin-bottom: 15px; background: #0a0a0a; border: 1px solid var(--border-color); color: white; border-radius: 4px; font-family: var(--font-main); }
+        .modal-content input:focus { outline: none; border-color: var(--accent); }
+        .toggle-auth { margin-top: 20px; font-size: 0.85rem; color: var(--text-muted); }
+        .toggle-auth span { color: var(--accent); cursor: pointer; font-weight: bold; }
+
+        /* Cart */
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1001; display: none; }
+        .cart-overlay.active { display: block; }
+        .cart-sidebar { position: fixed; top: 0; right: -450px; width: 400px; max-width: 100%; height: 100vh; background-color: var(--bg-light-dark); z-index: 1002; transition: right 0.4s ease; padding: 25px; display: flex; flex-direction: column; box-shadow: -5px 0 20px rgba(0,0,0,0.8); border-left: 1px solid var(--border-color); }
+        .cart-sidebar.active { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
+        .close-cart { cursor: pointer; font-size: 1.8rem; transition: 0.3s; line-height: 1; }
+        .close-cart:hover { color: var(--accent); }
+        .cart-items { flex: 1; overflow-y: auto; padding-right: 10px; }
+        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+        .cart-item img { width: 70px; height: 70px; object-fit: cover; border-radius: 4px; background: #fff; }
+        .cart-item-details { flex: 1; text-align: left; }
+        .cart-item-title { font-size: 0.9rem; font-weight: bold; }
+        .cart-item-price { color: var(--text-muted); font-size: 0.9rem; margin-top: 5px; }
+        .remove-btn { color: #ff4c4c; font-size: 0.8rem; cursor: pointer; margin-top: 8px; display: inline-block; text-transform: uppercase; font-weight: bold;}
+        .cart-footer { border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: auto; }
+        .cart-total { display: flex; justify-content: space-between; align-items: flex-end; font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; }
+        
+        /* FAQ */
+        .faq-section { padding: 60px 5%; max-width: 800px; margin: 0 auto; }
+        .faq-item { background-color: var(--bg-light-dark); margin-bottom: 15px; padding: 20px; border-radius: 4px; border-left: 3px solid var(--accent); }
+        .faq-item h3 { font-size: 1.1rem; margin-bottom: 10px; }
+        .faq-item p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
     </style>
 </head>
 <body>
 
-    <div class="announcement-bar">BUY 2, GET 20% OFF | WORLDWIDE SHIPPING</div>
+    <div class="announcement-bar">
+        <span>BUY 2, GET 20% OFF | LIMITED TIME OFFER</span>
+    </div>
 
     <header>
-        <div id="menu-toggle" onclick="toggleMenu()" style="font-size: 1.5rem;">☰</div>
-        <a href="#"><img src="logo.jpeg" alt="Logo" class="logo-img"></a>
+        <a href="#"><img src="logo.jpeg" alt="Seiko Forge Logo" class="logo-img"></a>
+        <nav>
+            <ul>
+                <li><a href="#shop">Shop</a></li>
+                <li><a href="#" onclick="alert('The 3D Configurator is currently under construction. Check back soon!'); return false;">Configurator</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </nav>
         <div class="nav-icons">
-            <span onclick="toggleLogin()">👤</span>
-            <span id="cart-icon" onclick="openCart()">🛒(<span id="cart-count">0</span>)</span>
+            <span onclick="openAuth()">👤</span>
+            <span id="cart-icon" onclick="openCart()">🛒 (<span id="cart-count">0</span>)</span>
         </div>
     </header>
 
-    <nav class="mobile-nav" id="mobile-nav">
-        <div class="close-modal" onclick="toggleMenu()">&times;</div>
-        <ul>
-            <li><a href="#shop" onclick="toggleMenu()">Shop</a></li>
-            <li><a href="#" onclick="alert('Coming Soon'); toggleMenu()">Configurator</a></li>
-            <li><a href="#faq" onclick="toggleMenu()">FAQ</a></li>
-            <li><a href="#" onclick="toggleLogin(); toggleMenu()">Account</a></li>
-        </ul>
-    </nav>
-
-    <div class="modal" id="login-modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="toggleLogin()">&times;</span>
+    <div class="modal" id="auth-modal">
+        <div class="modal-content" id="login-box">
+            <span class="close-modal" onclick="closeAuth()">&times;</span>
             <h2>Sign In</h2>
+            <input type="email" placeholder="Email Address" id="login-email">
+            <input type="password" placeholder="Password" id="login-pass">
+            <button class="btn" onclick="mockAuth('Welcome back to Seiko Forge!')">Log In</button>
+            <p class="toggle-auth">Don't have an account? <span onclick="toggleAuthMode()">Register here</span></p>
+        </div>
+        
+        <div class="modal-content" id="register-box" style="display: none;">
+            <span class="close-modal" onclick="closeAuth()">&times;</span>
+            <h2>Create Account</h2>
+            <input type="text" placeholder="Full Name">
             <input type="email" placeholder="Email Address">
             <input type="password" placeholder="Password">
-            <button class="btn" onclick="alert('Login feature coming soon!')">Login</button>
-            <p style="text-align: center; margin-top: 15px; font-size: 0.8rem; color: var(--text-muted);">
-                Don't have an account? <span style="color: var(--accent); cursor: pointer;">Register</span>
-            </p>
+            <button class="btn" onclick="mockAuth('Account created successfully!')">Sign Up</button>
+            <p class="toggle-auth">Already have an account? <span onclick="toggleAuthMode()">Log in</span></p>
         </div>
     </div>
 
     <section class="hero">
-        <h1>BUILT BY HAND.</h1>
-        <p>Iconic designs, Seiko precision.</p>
-        <a href="#shop" class="btn" style="width: auto; margin-top: 20px;">Shop Collection</a>
+        <h1>BUILT BY HAND. GUIDED BY PASSION.</h1>
+        <p>Wear the watch of your dreams by combining iconic designs with high-precision Seiko movements.</p>
     </section>
 
     <section class="bestsellers" id="shop">
-        <h2 class="section-title">The Collection</h2>
+        <h2 class="section-title">The Forge Collection</h2>
         <div class="grid-container">
+            
             <div class="product-card">
-                <img src="seiko1.webp" alt="Seikojust" class="product-img">
+                <img src="seiko1.webp" alt="Seikojust Ice Blue" class="product-img" onerror="this.src='https://via.placeholder.com/300x300?text=Image+Missing'">
                 <div class="product-info">
-                    <h3 class="product-title">Seikojust | Ice Blue</h3>
-                    <div class="product-price"><span class="sale-price">€199.00</span></div>
+                    <div>
+                        <h3 class="product-title">Seikojust | Ice Blue</h3>
+                        <p class="product-desc">Datejust style with fluted bezel, jubilee bracelet, and ice blue dial.</p>
+                        <div class="product-price"><span class="sale-price">€199.00</span></div>
+                    </div>
                     <button class="btn" onclick="addToCart('Seikojust | Ice Blue', 199.00, 'seiko1.webp', this)">Add to Cart</button>
                 </div>
             </div>
+
             <div class="product-card">
-                <img src="seiko2.webp" alt="Seikomaster" class="product-img">
+                <img src="seiko2.webp" alt="Seikomaster" class="product-img" onerror="this.src='https://via.placeholder.com/300x300?text=Image+Missing'">
                 <div class="product-info">
-                    <h3 class="product-title">Seikomaster | Titanium</h3>
-                    <div class="product-price"><span class="sale-price">€199.00</span></div>
-                    <button class="btn" onclick="addToCart('Seikomaster | Titanium', 199.00, 'seiko2.webp', this)">Add to Cart</button>
+                    <div>
+                        <h3 class="product-title">Seikomaster | Titanium Mesh</h3>
+                        <p class="product-desc">Seamaster style diver on a premium mesh bracelet.</p>
+                        <div class="product-price"><span class="sale-price">€199.00</span></div>
+                    </div>
+                    <button class="btn" onclick="addToCart('Seikomaster | Titanium Mesh', 199.00, 'seiko2.webp', this)">Add to Cart</button>
                 </div>
             </div>
+
+            <div class="product-card">
+                <img src="seiko3.webp" alt="Seikomariner Two Tone" class="product-img" onerror="this.src='https://via.placeholder.com/300x300?text=Image+Missing'">
+                <div class="product-info">
+                    <div>
+                        <h3 class="product-title">Seikomariner | Two-Tone</h3>
+                        <p class="product-desc">Classic Submariner style featuring a black and gold aesthetic.</p>
+                        <div class="product-price"><span class="sale-price">€199.00</span></div>
+                    </div>
+                    <button class="btn" onclick="addToCart('Seikomariner | Two-Tone', 199.00, 'seiko3.webp', this)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="seiko4.webp" alt="Santeiko Santos Brown" class="product-img" onerror="this.src='https://via.placeholder.com/300x300?text=Image+Missing'">
+                <div class="product-info">
+                    <div>
+                        <h3 class="product-title">Santeiko | Chocolate Santos</h3>
+                        <p class="product-desc">Square Santos style mod with a rich brown sunburst dial and Roman numerals.</p>
+                        <div class="product-price"><span class="sale-price">€199.00</span></div>
+                    </div>
+                    <button class="btn" onclick="addToCart('Santeiko | Chocolate Santos', 199.00, 'seiko4.webp', this)">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <img src="seiko5.webp" alt="Seikomariner Hulk" class="product-img" onerror="this.src='https://via.placeholder.com/300x300?text=Image+Missing'">
+                <div class="product-info">
+                    <div>
+                        <h3 class="product-title">Seikomariner | Hulk</h3>
+                        <p class="product-desc">Vibrant green Submariner style mod with a matching green sunburst dial.</p>
+                        <div class="product-price"><span class="sale-price">€199.00</span></div>
+                    </div>
+                    <button class="btn" onclick="addToCart('Seikomariner | Hulk', 199.00, 'seiko5.webp', this)">Add to Cart</button>
+                </div>
+            </div>
+
         </div>
     </section>
 
     <section class="faq-section" id="faq">
-        <h2 class="section-title">FAQ</h2>
+        <h2 class="section-title">Frequently Asked Questions</h2>
         <div class="faq-item">
-            <h3>Authenticity?</h3>
-            <p>We use genuine Seiko NH35 movements in custom-built cases.</p>
+            <h3>Are these authentic Seiko watches?</h3>
+            <p>Our watches are custom-built modifications (mods). We use authentic, highly reliable Seiko automatic movements (like the NH35) housed in custom aftermarket parts.</p>
+        </div>
+        <div class="faq-item">
+            <h3>How long does shipping take?</h3>
+            <p>Because of the intricate assembly, please allow 21 business days for your unique watch to be crafted and delivered to your door.</p>
         </div>
     </section>
+
+    <div style="text-align: center; padding: 40px; border-top: 1px solid var(--border-color); margin-top: 40px;">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">© 2026 SEIKO FORGE ALL RIGHTS RESERVED.</p>
+    </div>
 
     <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
             <h2>Your Cart</h2>
-            <span class="close-modal" onclick="closeCart()">&times;</span>
+            <span class="close-cart" onclick="closeCart()">&times;</span>
         </div>
         <div class="cart-items" id="cart-items"></div>
         <div class="cart-footer">
-            <div class="cart-total">Total: <span id="cart-total-price">€0.00</span></div>
-            <button class="btn" onclick="processCheckout()">Checkout</button>
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">€0.00</span>
+            </div>
+            <button class="btn" onclick="processCheckout()">Secure Checkout</button>
         </div>
     </div>
 
     <script>
+        // --- Auth Modal Logic ---
+        function openAuth() {
+            document.getElementById('auth-modal').classList.add('active');
+        }
+        function closeAuth() {
+            document.getElementById('auth-modal').classList.remove('active');
+            // Reset input fields
+            document.querySelectorAll('.modal-content input').forEach(input => input.value = '');
+        }
+        function toggleAuthMode() {
+            let loginBox = document.getElementById('login-box');
+            let regBox = document.getElementById('register-box');
+            if (loginBox.style.display === "none") {
+                loginBox.style.display = "block";
+                regBox.style.display = "none";
+            } else {
+                loginBox.style.display = "none";
+                regBox.style.display = "block";
+            }
+        }
+        function mockAuth(message) {
+            alert(message);
+            closeAuth();
+        }
+
+        // --- Cart Logic ---
         let cart = [];
-
-        function toggleMenu() {
-            document.getElementById('mobile-nav').classList.toggle('active');
-        }
-
-        function toggleLogin() {
-            document.getElementById('login-modal').classList.toggle('active');
-        }
 
         function openCart() {
             document.getElementById('cart-sidebar').classList.add('active');
             document.getElementById('cart-overlay').classList.add('active');
         }
-
         function closeCart() {
             document.getElementById('cart-sidebar').classList.remove('active');
             document.getElementById('cart-overlay').classList.remove('active');
         }
 
-        function addToCart(name, price, img, btn) {
-            cart.push({name, price, img});
-            updateUI();
+        function addToCart(name, price, img, buttonElement) {
+            cart.push({ name: name, price: price, img: img });
+            updateCartUI();
             openCart();
+            
+            let originalText = buttonElement.innerText;
+            buttonElement.innerText = "ADDED!";
+            buttonElement.style.backgroundColor = "var(--accent)";
+            buttonElement.style.color = "#fff";
+            
+            setTimeout(() => {
+                buttonElement.innerText = originalText;
+                buttonElement.style.backgroundColor = "";
+                buttonElement.style.color = "";
+            }, 1000);
         }
 
-        function updateUI() {
-            const container = document.getElementById('cart-items');
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            let cartContainer = document.getElementById('cart-items');
+            let totalPriceContainer = document.getElementById('cart-total-price');
             document.getElementById('cart-count').innerText = cart.length;
-            container.innerHTML = cart.length === 0 ? '<p>Empty</p>' : '';
-            let total = 0;
-            cart.forEach((item, i) => {
-                total += item.price;
-                container.innerHTML += `<div class="cart-item" style="display:flex; gap:10px; margin-bottom:10px;">
-                    <img src="${item.img}" width="50">
-                    <div>${item.name}<br>€${item.price}</div>
-                </div>`;
-            });
-            document.getElementById('cart-total-price').innerText = `€${total.toFixed(2)}`;
+            
+            cartContainer.innerHTML = ''; 
+            let subtotal = 0;
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<p style="text-align:center; color:#a3a3a3; margin-top:20px;">Your cart is empty.</p>';
+                totalPriceContainer.innerHTML = '€0.00';
+            } else {
+                for (let i = 0; i < cart.length; i++) {
+                    subtotal += cart[i].price;
+                    let itemHTML = `
+                        <div class="cart-item">
+                            <img src="${cart[i].img}" alt="${cart[i].name}" onerror="this.src='https://via.placeholder.com/70x70?text=Img'">
+                            <div class="cart-item-details">
+                                <div class="cart-item-title">${cart[i].name}</div>
+                                <div class="cart-item-price">€${cart[i].price.toFixed(2)}</div>
+                                <span class="remove-btn" onclick="removeFromCart(${i})">Remove</span>
+                            </div>
+                        </div>
+                    `;
+                    cartContainer.innerHTML += itemHTML;
+                }
+
+                // 20% Discount Logic Display
+                if (cart.length >= 2) {
+                    let discountAmount = subtotal * 0.20;
+                    let newTotal = subtotal - discountAmount;
+                    
+                    totalPriceContainer.innerHTML = `
+                        <div style="text-align: right;">
+                            <span style="text-decoration: line-through; color: #a3a3a3; font-size: 0.9rem; margin-right: 10px;">€${subtotal.toFixed(2)}</span>
+                            <span style="color: #4CAF50; font-size: 0.9rem; display: block; margin-bottom: 5px;">- 20% OFF (Save €${discountAmount.toFixed(2)})</span>
+                            <span style="color: var(--accent); font-size: 1.4rem;">€${newTotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                } else {
+                    totalPriceContainer.innerHTML = '€' + subtotal.toFixed(2);
+                }
+            }
         }
 
         function processCheckout() {
-            if(cart.length > 0) window.location.href = "https://buy.stripe.com/test_14A3co3AueF67S73am83C00";
+            if (cart.length === 0) {
+                alert("Your cart is empty! Add a watch before checking out.");
+            } else {
+                window.location.href = "https://buy.stripe.com/test_14A3co3AueF67S73am83C00";
+            }
         }
+
+        updateCartUI();
     </script>
 </body>
 </html>
