@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Seiko Forge | Custom Meticulous Watches</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-light-dark: #1a1a1a;
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --accent: #d4af37;
+            --border-color: #333333;
+            --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: var(--font-main); background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        
+        /* Buttons & UI */
+        .btn { display: inline-block; padding: 14px 30px; background-color: var(--text-main); color: var(--bg-dark); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; cursor: pointer; border: none; width: 100%; text-align: center; border-radius: 4px; font-size: 0.9rem; }
+        .btn:active { transform: scale(0.98); background-color: var(--accent); color: white; }
+
+        .announcement-bar { background-color: #000; padding: 8px; text-align: center; font-size: 0.7rem; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); }
+        
+        /* Mobile Header */
+        header { padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background-color: rgba(10, 10, 10, 0.98); z-index: 1000; border-bottom: 1px solid var(--border-color); height: 70px; }
+        .logo-img { height: 45px; filter: invert(1) brightness(1.5); }
+        
+        .nav-icons { display: flex; gap: 15px; align-items: center; font-size: 1.2rem; }
+        .nav-icons span { cursor: pointer; }
+
+        /* Full Screen Mobile Menu */
+        .mobile-nav { position: fixed; top: 0; left: -100%; width: 80%; height: 100%; background: var(--bg-light-dark); z-index: 2000; transition: 0.4s; padding: 80px 40px; }
+        .mobile-nav.active { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+        .mobile-nav ul li { margin-bottom: 30px; list-style: none; }
+        .mobile-nav ul li a { font-size: 1.5rem; text-transform: uppercase; font-weight: bold; color: var(--text-main); text-decoration: none; }
+
+        /* Hero Section */
+        .hero { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), #111; padding: 0 30px; }
+        .hero h1 { font-size: 2.2rem; letter-spacing: 2px; margin-bottom: 15px; }
+        .hero p { font-size: 1rem; color: #ddd; }
+
+        /* Grid Adjustments */
+        .section-title { text-align: center; margin: 40px 0 20px; font-size: 1.5rem; letter-spacing: 2px; }
+        .bestsellers { padding: 20px 5%; }
+        .grid-container { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        
+        /* Login Modal */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--bg-light-dark); width: 100%; max-width: 400px; padding: 30px; border-radius: 8px; position: relative; }
+        .modal-content h2 { margin-bottom: 20px; color: var(--accent); }
+        .modal-content input { width: 100%; padding: 12px; margin-bottom: 15px; background: #222; border: 1px solid var(--border-color); color: white; border-radius: 4px; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; }
+
+        /* Cart Sidebar (Optimized for Mobile) */
+        .cart-sidebar { position: fixed; top: 0; right: -100%; width: 100%; height: 100%; background-color: var(--bg-light-dark); z-index: 1002; transition: 0.4s; padding: 20px; display: flex; flex-direction: column; }
+        .cart-sidebar.active { right: 0; }
+
+        /* FAQ */
+        .faq-section { padding: 40px 5%; }
+        .faq-item { margin-bottom: 10px; padding: 15px; }
+
+        @media (min-width: 768px) {
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 3.5rem; }
+            .cart-sidebar { width: 400px; right: -450px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="announcement-bar">BUY 2, GET 20% OFF | WORLDWIDE SHIPPING</div>
+
+    <header>
+        <div id="menu-toggle" onclick="toggleMenu()" style="font-size: 1.5rem;">☰</div>
+        <a href="#"><img src="logo.jpeg" alt="Logo" class="logo-img"></a>
+        <div class="nav-icons">
+            <span onclick="toggleLogin()">👤</span>
+            <span id="cart-icon" onclick="openCart()">🛒(<span id="cart-count">0</span>)</span>
+        </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobile-nav">
+        <div class="close-modal" onclick="toggleMenu()">&times;</div>
+        <ul>
+            <li><a href="#shop" onclick="toggleMenu()">Shop</a></li>
+            <li><a href="#" onclick="alert('Coming Soon'); toggleMenu()">Configurator</a></li>
+            <li><a href="#faq" onclick="toggleMenu()">FAQ</a></li>
+            <li><a href="#" onclick="toggleLogin(); toggleMenu()">Account</a></li>
+        </ul>
+    </nav>
+
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleLogin()">&times;</span>
+            <h2>Sign In</h2>
+            <input type="email" placeholder="Email Address">
+            <input type="password" placeholder="Password">
+            <button class="btn" onclick="alert('Login feature coming soon!')">Login</button>
+            <p style="text-align: center; margin-top: 15px; font-size: 0.8rem; color: var(--text-muted);">
+                Don't have an account? <span style="color: var(--accent); cursor: pointer;">Register</span>
+            </p>
+        </div>
+    </div>
+
+    <section class="hero">
+        <h1>BUILT BY HAND.</h1>
+        <p>Iconic designs, Seiko precision.</p>
+        <a href="#shop" class="btn" style="width: auto; margin-top: 20px;">Shop Collection</a>
+    </section>
+
+    <section class="bestsellers" id="shop">
+        <h2 class="section-title">The Collection</h2>
+        <div class="grid-container">
+            <div class="product-card">
+                <img src="seiko1.webp" alt="Seikojust" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">Seikojust | Ice Blue</h3>
+                    <div class="product-price"><span class="sale-price">€199.00</span></div>
+                    <button class="btn" onclick="addToCart('Seikojust | Ice Blue', 199.00, 'seiko1.webp', this)">Add to Cart</button>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="seiko2.webp" alt="Seikomaster" class="product-img">
+                <div class="product-info">
+                    <h3 class="product-title">Seikomaster | Titanium</h3>
+                    <div class="product-price"><span class="sale-price">€199.00</span></div>
+                    <button class="btn" onclick="addToCart('Seikomaster | Titanium', 199.00, 'seiko2.webp', this)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section" id="faq">
+        <h2 class="section-title">FAQ</h2>
+        <div class="faq-item">
+            <h3>Authenticity?</h3>
+            <p>We use genuine Seiko NH35 movements in custom-built cases.</p>
+        </div>
+    </section>
+
+    <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <span class="close-modal" onclick="closeCart()">&times;</span>
+        </div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">Total: <span id="cart-total-price">€0.00</span></div>
+            <button class="btn" onclick="processCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function toggleMenu() {
+            document.getElementById('mobile-nav').classList.toggle('active');
+        }
+
+        function toggleLogin() {
+            document.getElementById('login-modal').classList.toggle('active');
+        }
+
+        function openCart() {
+            document.getElementById('cart-sidebar').classList.add('active');
+            document.getElementById('cart-overlay').classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cart-sidebar').classList.remove('active');
+            document.getElementById('cart-overlay').classList.remove('active');
+        }
+
+        function addToCart(name, price, img, btn) {
+            cart.push({name, price, img});
+            updateUI();
+            openCart();
+        }
+
+        function updateUI() {
+            const container = document.getElementById('cart-items');
+            document.getElementById('cart-count').innerText = cart.length;
+            container.innerHTML = cart.length === 0 ? '<p>Empty</p>' : '';
+            let total = 0;
+            cart.forEach((item, i) => {
+                total += item.price;
+                container.innerHTML += `<div class="cart-item" style="display:flex; gap:10px; margin-bottom:10px;">
+                    <img src="${item.img}" width="50">
+                    <div>${item.name}<br>€${item.price}</div>
+                </div>`;
+            });
+            document.getElementById('cart-total-price').innerText = `€${total.toFixed(2)}`;
+        }
+
+        function processCheckout() {
+            if(cart.length > 0) window.location.href = "https://buy.stripe.com/test_14A3co3AueF67S73am83C00";
+        }
+    </script>
+</body>
+</html>
